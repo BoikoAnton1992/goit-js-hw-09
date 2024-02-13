@@ -18,10 +18,15 @@ function updateLocalStorage(email, message) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ email, message }));
 }
 
-function clearForm() {
-  feedbackForm.email.value = '';
-  feedbackForm.message.value = '';
+function clearLocalStorage() {
+  localStorage.removeItem(STORAGE_KEY);
 }
+
+feedbackForm.addEventListener('input', () => {
+  const email = feedbackForm.email.value.trim();
+  const message = feedbackForm.message.value.trim();
+  updateLocalStorage(email, message);
+});
 
 feedbackForm.addEventListener('submit', event => {
   event.preventDefault();
@@ -36,9 +41,9 @@ feedbackForm.addEventListener('submit', event => {
 
   console.log({ email, message });
 
-  updateLocalStorage(email, message);
+  clearLocalStorage();
 
-  clearForm();
+  feedbackForm.reset();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
